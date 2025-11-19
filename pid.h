@@ -1,44 +1,28 @@
-#ifndef PID_CONTROLLER_H
-#define PID_CONTROLLER_H
 
 
-typedef struct {
 
-    /*controller gains*/
-
-    float kp, ki, kd;
+typedef struct{
 
 
-    /* Derivative low-pass filter time constant*/
-    float tau;
+    float kp, ki, kd; // gains
 
-    /* Output limits*/
-    float limitMin;
-    float limitMax;
 
-    /* Integrator limits*/
-    float limitMinInt;
-    float limitMaxInt;
-    
-    /*sample time in seconds*/
-    float T;
+    float tau; // low-pass filter time constant
 
-    /* Controller "memory"*/
-    float integrator;
-    float prev_error; // required for integrator
-    float differentiator;
-    float prev_measurement; // required for differentiator 
 
-    /* controller output*/
-    float out;
-    
+    float limit_min, limit_max; // the output limits
+
+    float limit_min_int, limit_max_int; // integrator limits
+
+    float time; // time in seconds
+
+    float integrator, prev_error; // prev error needed for the integrator
+    float differentiator, prev_measurement; // prev measure is needed for the differentiator
+
+    float output;
 
 
 } pid_controller;
 
-
-// we pass it a pointer to the structure 
-void pid_controller_init(pid_controller *pid);
-float pid_controller_update(pid_controller *pid , float setpoint, float measurement);
-
-#endif
+void pid_init(pid_controller *pid);
+float pid_update(pid_controller *pid, float setpoint, float measurement);
